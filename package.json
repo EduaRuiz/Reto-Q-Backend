@@ -83,10 +83,8 @@
       "main\\.ts$"
     ],
     "moduleNameMapper": {
-      "@reto-q/(.*)": "<rootDir>/apps/reto-q-backend/$1",
-      "@domain/(.*)": "<rootDir>/domain/$1",
-      "@application/(.*)": "<rootDir>/application/$1",
-      "@infrastructure/(.*)": "<rootDir>/infrastructure/$1"
+      "@main-service/(.*)": "<rootDir>/apps/main-service/src/$1",
+      "@mail-sender-service/(.*)": "<rootDir>/apps/mail-sender-service/src/$1"
     }
   }
 }
