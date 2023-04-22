@@ -17,6 +17,9 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@main-service/*": ["./apps/main-service/src/*"],
+      "@mail-sender-service/*": ["./apps/mail-sender-service/src/*"],
+    }
   }
 }
