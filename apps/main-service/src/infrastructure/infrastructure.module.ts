@@ -3,8 +3,8 @@ import { PersistenceModule } from './persistance';
 import { MessagingModule } from './messaging';
 
 @Module({
-  imports: [],
+  imports: [PersistenceModule, MessagingModule],
   controllers: [],
-  providers: [PersistenceModule, MessagingModule],
+  providers: [],
 })
 export class InfrastructureModule {}
