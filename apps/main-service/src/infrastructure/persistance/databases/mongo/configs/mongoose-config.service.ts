@@ -8,7 +8,7 @@ import {
 export class MongooseConfigService implements MongooseOptionsFactory {
   createMongooseOptions(): MongooseModuleOptions {
     return {
-      uri: 'mongodb://localhost:27017',
+      uri: 'mongodb+srv://root:RetoQ@reto-q.bcfx9ib.mongodb.net/test',
       dbName: 'reto_q',
     };
   }
