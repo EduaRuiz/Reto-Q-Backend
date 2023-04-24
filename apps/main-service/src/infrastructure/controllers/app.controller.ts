@@ -1,12 +1,22 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from '../../app.service';
+import { TestService } from '../persistance/services';
+import { Observable } from 'rxjs';
+import { MainDelegate } from '@main-service/application/delegators/main-delegator';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  private readonly delegate: MainDelegate;
+
+  constructor(private readonly testService: TestService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getHello(): Observable<any> {
+    return this.testService.generateTest({
+      user_id: '123',
+      token: '',
+      level: '1',
+      created_at: new Date(),
+      questions: [],
+    });
   }
 }
