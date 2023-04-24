@@ -23,8 +23,8 @@ export class UserMongoService implements IUserDomainService {
     updateUser(id: string, entity: UserDomainModel): Observable<UserDomainModel> {
         return this.getUserById(id).pipe(
             switchMap((data: UserDomainModel) => {
-                data.level = entity.level;
-                data.available = entity.available;
+                data.level = entity.level === undefined? data.level : entity.level;
+                data.available = entity.available === undefined? data.available : entity.available;
                 return this.userRepository.update(id, data).pipe(
                     map((updatedData: UserMongoModel) => {
                         const updatedUser: UserDomainModel = {
