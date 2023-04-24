@@ -26,7 +26,7 @@ export class FinishTestUseCase implements IUseCase {
               : total < 26
               ? (user.available = false)
               : (user.available = false);
-            return this.userService.updateUser(user).pipe(
+            return this.userService.updateUser(user._id, user).pipe(
               map(() => {
                 this.testFinishedDomainEvent.publish({
                   test,
