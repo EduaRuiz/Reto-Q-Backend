@@ -15,4 +15,5 @@ export interface IUseCase {
    * @returns {Observable<any>}
    */
   execute(...args: any[]): Observable<any>;
+
 }
