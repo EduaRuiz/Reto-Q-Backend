@@ -15,6 +15,7 @@ export class UserMongoModel extends UserDomainModel {
   @Prop({
     required: true,
     type: String,
+    unique: true,
   })
   email: string;
 
