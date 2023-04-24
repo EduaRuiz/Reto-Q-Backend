@@ -9,6 +9,6 @@ export interface IQuestionDomainService {
     updateQuestion(id: string, question: QuestionDomainModel): Observable<QuestionDomainModel>;
     deleteQuestion(Id: string): Observable<boolean>;
     
-    validateAnswer(Id: string, answer: string[]): Observable<boolean>;
+   
 
   }
