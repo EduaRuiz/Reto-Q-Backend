@@ -4,7 +4,7 @@ import {
 } from '@main-service/domain/models';
 import { ITestDomainService } from '@main-service/domain/services';
 import { Observable, map, switchMap } from 'rxjs';
-import { TestMongoRepository } from '../repositories';
+import { QuestionMongoRepository, TestMongoRepository } from '../repositories';
 import {
   GenerateTestTokenService,
   RandomQuestionService,
@@ -14,17 +14,9 @@ import { TestMongoModel } from '../models';
 
 @Injectable()
 export class TestMongoService implements ITestDomainService {
-  private readonly questionRepo: {
-    getAll: () => Observable<QuestionDomainModel[]>;
-    getAllByLevel: (level: string) => Observable<QuestionDomainModel[]>;
-    getAllByLevelAndTopic: (
-      level: number,
-      topic: string,
-    ) => Observable<QuestionDomainModel[]>;
-  };
   constructor(
     private readonly testRepo: TestMongoRepository,
-    //private readonly questionRepo: QuestionMongoRepository,
+    private readonly questionRepo: QuestionMongoRepository,
     private readonly randomQuestion: RandomQuestionService,
     private readonly token: GenerateTestTokenService,
   ) {}
@@ -54,7 +46,7 @@ export class TestMongoService implements ITestDomainService {
         while (currentTokenList.includes(token)) {
           token = this.token.generateToken();
         }
-        return this.questionRepo.getAllByLevel(test.level).pipe(
+        return this.questionRepo.findAllByLevel(test.level).pipe(
           switchMap((questions) => {
             const selectedQuestions = this.randomQuestion.generate(questions);
             const testToSave = {

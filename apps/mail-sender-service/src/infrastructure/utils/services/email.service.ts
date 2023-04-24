@@ -8,8 +8,21 @@ import { Observable, from } from 'rxjs';
 @Injectable()
 export class EmailService implements IEmailDomainService {
   private readonly transporter: Transporter<SMTPTransport.SentMessageInfo>;
-  private readonly emailFrom: string = '';
-  private readonly password: string = '';
+  private readonly emailFrom: string = 'reto.q.sofka@gmail.com';
+  private readonly password: string = 'mdobzoyiosisvbxk';
+  private readonly template: string = `
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>{subject}</title>
+    </head>
+    <body>
+      <h1>{subject}</h1>
+      <p>{body}</p>
+    </body>
+  </html>
+`;
 
   constructor() {
     this.transporter = nodemailer.createTransport({
@@ -23,12 +36,23 @@ export class EmailService implements IEmailDomainService {
     });
   }
 
-  sendEmail(to: string, subject: string, body: string): Observable<string> {
+  sendEmail(
+    to: string,
+    subject: string,
+    body: string,
+    template?: string,
+  ): Observable<string> {
     const mailOptions = {
       from: this.emailFrom,
       to: to,
       subject: subject,
       text: body,
+      html:
+        template ??
+        this.template
+          .replace('{subject}', subject)
+          .replace('{body}', body)
+          .replace('{subject}', subject),
     };
 
     return from(

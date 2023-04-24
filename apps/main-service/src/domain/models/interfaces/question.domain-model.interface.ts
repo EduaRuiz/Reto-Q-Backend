@@ -1,4 +1,5 @@
 export interface IQuestionDomainModel {
+
   _id?: string;
   topic: string;
   level: string;
@@ -7,3 +8,4 @@ export interface IQuestionDomainModel {
   options: string[];
   answer: string[];
 }
+

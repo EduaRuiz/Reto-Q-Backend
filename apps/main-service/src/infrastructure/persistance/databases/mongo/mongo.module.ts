@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
 import { MongooseConfigService } from './configs';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TestMongoModel, TestSchema, UserMongoModel, UserSchema } from './models';
-import { TestMongoService, UserMongoService } from './services';
-import { TestMongoRepository, UserMongoRepository } from './repositories';
+import {
+  QuestionMongoModel,
+  QuestionSchema,
+  TestMongoModel,
+  TestSchema,
+  UserMongoModel,
+  UserSchema,
+} from './models';
+import { QuestionMongoService, TestMongoService, UserMongoService } from './services';
+import { QuestionMongoRepository, TestMongoRepository, UserMongoRepository } from './repositories';
 import {
   GenerateTestTokenService,
   RandomQuestionService,
@@ -17,6 +24,7 @@ import {
     MongooseModule.forFeature([
       { name: TestMongoModel.name, schema: TestSchema },
       { name: UserMongoModel.name, schema: UserSchema },
+      { name: QuestionMongoModel.name, schema: QuestionSchema },
     ]),
   ],
   providers: [
@@ -25,6 +33,8 @@ import {
     TestMongoRepository,
     UserMongoService,
     UserMongoRepository,
+    QuestionMongoService,
+    QuestionMongoRepository,
     RandomQuestionService,
     GenerateTestTokenService,
   ],
@@ -33,6 +43,8 @@ import {
     TestMongoRepository,
     UserMongoService,
     UserMongoRepository,
+    QuestionMongoService,
+    QuestionMongoRepository,
     RandomQuestionService,
     GenerateTestTokenService,
   ],
