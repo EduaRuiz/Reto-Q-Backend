@@ -4,5 +4,5 @@ export interface IUserDomainModel {
   email: string;
   level: string;
   available: boolean;
-  role: string;
+  role?: string;
 }
