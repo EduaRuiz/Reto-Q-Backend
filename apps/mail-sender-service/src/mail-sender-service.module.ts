@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { MailSenderServiceService } from './mail-sender-service.service';
-import { MailSenderServiceController } from './infrastructure/controllers';
+import { InfrastructureModule } from './infrastructure';
 
 @Module({
-  imports: [],
-  controllers: [MailSenderServiceController],
-  providers: [MailSenderServiceService],
+  imports: [InfrastructureModule],
+  controllers: [],
+  providers: [],
 })
 export class MailSenderServiceModule {}

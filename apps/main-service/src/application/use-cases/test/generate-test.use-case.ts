@@ -1,18 +1,18 @@
 import { Observable, catchError, of, switchMap, throwError } from 'rxjs';
-import { IUseCase } from './interface';
 import { INewTestDto } from '@main-service/domain/dto';
 import {
   ITestDomainService,
   IUserDomainService,
 } from '@main-service/domain/services';
 import { TestDomainModel } from '@main-service/domain/models';
-import { GeneratedTestDomainEvent } from '@main-service/domain/events/publishers';
+import { TestGeneratedDomainEvent } from '@main-service/domain/events/publishers';
+import { IUseCase } from '../interface';
 
 export class GenerateTestUseCase implements IUseCase {
   constructor(
     private readonly testService: ITestDomainService,
     private readonly userService: IUserDomainService,
-    private readonly generatedTest: GeneratedTestDomainEvent,
+    private readonly generatedTest: TestGeneratedDomainEvent,
   ) {}
   execute(dto: INewTestDto): Observable<{ success: boolean; message: string }> {
     return this.userService.getUserByEmail(dto.userEmail).pipe(

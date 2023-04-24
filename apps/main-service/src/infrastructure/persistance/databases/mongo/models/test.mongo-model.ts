@@ -15,6 +15,7 @@ export class TestMongoModel extends TestDomainModel {
   @Prop({
     required: true,
     type: String,
+    unique: true,
   })
   token: string;
 
@@ -31,7 +32,7 @@ export class TestMongoModel extends TestDomainModel {
   created_at: Date;
 
   @Prop({
-    required: true,
+    required: false,
     type: Date,
   })
   started_at?: Date;

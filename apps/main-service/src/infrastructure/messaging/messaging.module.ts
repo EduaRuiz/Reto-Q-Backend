@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import {
+  TestFinishedEventPublisher,
+  TestGeneratedEventPublisher,
+} from './publishers';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: 'RETO_Q_SERVICE',
+        name: 'MAIN_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: [
@@ -17,7 +21,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       },
     ]),
   ],
-  providers: [],
-  exports: [],
+  providers: [TestGeneratedEventPublisher, TestFinishedEventPublisher],
+  exports: [TestGeneratedEventPublisher, TestFinishedEventPublisher],
 })
 export class MessagingModule {}
