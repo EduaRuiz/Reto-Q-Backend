@@ -1,5 +1,7 @@
 import { QuestionDomainModel } from '@main-service/domain/models';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class RandomQuestionService {
   public generate(questions: QuestionDomainModel[]): QuestionDomainModel[] {
     const groupsByTypeAndTopic = this.groupByTypeAndTopic(questions);
