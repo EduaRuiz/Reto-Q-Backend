@@ -11,3 +11,4 @@ export class QuestionDomainModel implements IQuestionDomainModel {
   answer: string[];
 
 }
+
