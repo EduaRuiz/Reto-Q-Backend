@@ -6,9 +6,11 @@ import {
   QuestionSchema,
   TestMongoModel,
   TestSchema,
+  UserMongoModel,
+  UserSchema,
 } from './models';
-import { QuestionMongoService, TestMongoService } from './services';
-import { QuestionMongoRepository, TestMongoRepository } from './repositories';
+import { QuestionMongoService, TestMongoService, UserMongoService } from './services';
+import { QuestionMongoRepository, TestMongoRepository, UserMongoRepository } from './repositories';
 import {
   GenerateTestTokenService,
   RandomQuestionService,
@@ -21,14 +23,16 @@ import {
     }),
     MongooseModule.forFeature([
       { name: TestMongoModel.name, schema: TestSchema },
+      { name: UserMongoModel.name, schema: UserSchema },
       { name: QuestionMongoModel.name, schema: QuestionSchema },
-      // { name: UserMongoModel.name, schema: UserSchema },
     ]),
   ],
   providers: [
     MongooseConfigService,
     TestMongoService,
     TestMongoRepository,
+    UserMongoService,
+    UserMongoRepository,
     QuestionMongoService,
     QuestionMongoRepository,
     RandomQuestionService,
@@ -37,6 +41,8 @@ import {
   exports: [
     TestMongoService,
     TestMongoRepository,
+    UserMongoService,
+    UserMongoRepository,
     QuestionMongoService,
     QuestionMongoRepository,
     RandomQuestionService,
