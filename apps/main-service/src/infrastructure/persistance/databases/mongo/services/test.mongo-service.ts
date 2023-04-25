@@ -3,13 +3,13 @@ import {
   TestDomainModel,
 } from '@main-service/domain/models';
 import { ITestDomainService } from '@main-service/domain/services';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, iif, map, of, switchMap, throwError } from 'rxjs';
 import { QuestionMongoRepository, TestMongoRepository } from '../repositories';
 import {
   GenerateTestTokenService,
   RandomQuestionService,
 } from '@main-service/infrastructure/utils/services';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TestMongoModel } from '../models';
 
 @Injectable()
@@ -26,13 +26,12 @@ export class TestMongoService implements ITestDomainService {
     level: string,
   ): Observable<TestDomainModel> {
     return this.testRepo.findByLevelAndUserId(userId, level).pipe(
-      map((tests: TestMongoModel[]) =>
-        tests.length === 0
-          ? null
-          : (tests[0].questions.forEach((question) => {
-              delete question.question.answer;
-            }),
-            tests[0]),
+      switchMap((tests: TestMongoModel[]) =>
+        iif(
+          () => tests.length === 0,
+          throwError(() => new NotFoundException('Test not found!')),
+          of(tests[0]),
+        ),
       ),
     );
   }

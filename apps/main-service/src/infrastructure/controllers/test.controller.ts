@@ -1,25 +1,31 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { QuestionService, TestService } from '../persistance/services';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  QuestionService,
+  TestService,
+  UserService,
+} from '../persistance/services';
 import { Observable } from 'rxjs';
 import { TestDelegate } from '@main-service/application/delegators';
 import {
   TestFinishedEventPublisher,
   TestGeneratedEventPublisher,
 } from '../messaging';
+import { SendAnswerToTestDto } from '../utils/dto';
+import { EmailPipe } from '../utils/pipes';
 
 @Controller('test')
 export class TestController {
   private readonly delegate: TestDelegate;
 
   constructor(
-    // private readonly userService: any,
+    private readonly userService: UserService,
     private readonly questionService: QuestionService,
     private readonly testService: TestService,
     private readonly testGeneratedEvent: TestGeneratedEventPublisher,
     private readonly testFinishedEvent: TestFinishedEventPublisher,
   ) {
     this.delegate = new TestDelegate(
-      {} as any,
+      this.userService,
       this.questionService,
       this.testService,
       this.testGeneratedEvent,
@@ -27,20 +33,9 @@ export class TestController {
     );
   }
 
-  @Get()
-  getHello(): Observable<any> {
-    return this.testService.generateTest({
-      user_id: '123',
-      token: '',
-      level: '1',
-      created_at: new Date(),
-      questions: [],
-    });
-  }
-
-  @Post('generate')
+  @Post('generate/:userEmail')
   generateTest(
-    userEmail: string,
+    @Param('userEmail', EmailPipe) userEmail: string,
   ): Observable<{ success: boolean; message: string }> {
     this.delegate.toGenerateTest();
     return this.delegate.execute<{ success: boolean; message: string }>(
@@ -48,22 +43,20 @@ export class TestController {
     );
   }
 
-  @Post('start')
-  startTest(@Body() token: { token: string }): Observable<string> {
+  @Post('start/:token')
+  startTest(@Param('token') token: string): Observable<string> {
     this.delegate.toStartTest();
-    return this.delegate.execute<string>(token.token);
+    return this.delegate.execute<string>(token);
   }
 
-  @Post('finish')
-  finishTest(@Body() token: { token: string }): Observable<string> {
+  @Post('finish/:token')
+  finishTest(@Param('token') token: string): Observable<string> {
     this.delegate.toFinishTest();
-    return this.delegate.execute<string>(token.token);
+    return this.delegate.execute<string>(token);
   }
 
   @Post('answer')
-  setAnswerToTest(
-    @Body() answer: { token: string; question_id: string; answer: string },
-  ): Observable<string> {
+  setAnswerToTest(@Body() answer: SendAnswerToTestDto): Observable<string> {
     this.delegate.toSetAnswerToTest();
     return this.delegate.execute<string>(answer);
   }
