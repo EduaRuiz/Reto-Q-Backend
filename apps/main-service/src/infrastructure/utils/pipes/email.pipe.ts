@@ -7,7 +7,6 @@ export class EmailPipe implements PipeTransform<string> {
     if (!emailRegex.test(value)) {
       throw new BadRequestException('Invalid email address');
     }
-    console.log('value', value);
     return value;
   }
 }

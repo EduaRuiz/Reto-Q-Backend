@@ -43,8 +43,6 @@ export class GenerateTestUseCase implements IUseCase {
         const timerComplete =
           !!test?.started_at &&
           new Date(test?.started_at).getTime() < Date.now() - 60 * 60 * 1000;
-        console.log(new Date(test?.created_at).getTime());
-        console.log('timerComplete', timerComplete);
         !hasPassed24Hours &&
           !timerComplete &&
           this.generatedTest.publish({ test, userEmail });
