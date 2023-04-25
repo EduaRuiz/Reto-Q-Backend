@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { PersistenceModule } from './persistance';
 import { MessagingModule } from './messaging';
 import { UserController } from './controllers/user.controller';
-import { TestController } from './controllers';
+import { QuestionController, TestController } from './controllers';
 
 @Module({
   imports: [PersistenceModule, MessagingModule],
-  controllers: [TestController, UserController],
+  controllers: [TestController, UserController, QuestionController],
 
   providers: [],
 })

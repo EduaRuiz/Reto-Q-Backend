@@ -1,7 +1,6 @@
 import { IQuestionDomainModel } from './interfaces';
 
 export class QuestionDomainModel implements IQuestionDomainModel {
-
   _id?: string;
   topic: string;
   level: string;
@@ -9,6 +8,4 @@ export class QuestionDomainModel implements IQuestionDomainModel {
   sentence: string;
   options: string[];
   answer: string[];
-
 }
-
