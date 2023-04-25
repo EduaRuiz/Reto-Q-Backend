@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import {
   FinishTestUseCase,
   GenerateTestUseCase,
+  GetTestUseCase,
   SetAnswerToTestUseCase,
   StartTestUseCase,
 } from '../use-cases';
@@ -16,7 +17,7 @@ import {
   TestGeneratedDomainEvent,
 } from '@main-service/domain/events/publishers';
 
-export class TestDelegate implements IUseCase {
+export class TestDelegator implements IUseCase {
   private delegate: IUseCase;
 
   constructor(
@@ -55,5 +56,9 @@ export class TestDelegate implements IUseCase {
 
   toSetAnswerToTest(): void {
     this.delegate = new SetAnswerToTestUseCase(this.testService);
+  }
+
+  toGetTest(): void {
+    this.delegate = new GetTestUseCase(this.testService);
   }
 }

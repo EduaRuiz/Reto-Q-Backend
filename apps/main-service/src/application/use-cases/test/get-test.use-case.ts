@@ -1,13 +1,12 @@
-import { IUseCase } from '@mail-sender-service/application';
+import { IUseCase } from '@mail-sender-service/application/use-cases/interface';
 import { TestDomainModel } from '@main-service/domain/models';
 import { ITestDomainService } from '@main-service/domain/services';
 import { BadRequestException } from '@nestjs/common';
 import { Observable, map, of, switchMap, throwError } from 'rxjs';
 
-export class StartTestUseCase implements IUseCase {
+export class GetTestUseCase implements IUseCase {
   constructor(private readonly testService: ITestDomainService) {}
-
-  execute(token: string): Observable<string> {
+  execute(token: string): Observable<TestDomainModel> {
     return this.testService.getTest(token).pipe(
       switchMap((test: TestDomainModel) => {
         const hasPassed24Hours =
@@ -16,9 +15,12 @@ export class StartTestUseCase implements IUseCase {
         const timerComplete =
           !!test?.started_at &&
           new Date(test?.started_at).getTime() < Date.now() - 60 * 60 * 1000;
+        test.questions.forEach((question) => {
+          question.question.answer = undefined;
+        });
         return hasPassed24Hours
           ? throwError(
-              () => new BadRequestException('Time 24hours limit exceeded'),
+              () => new BadRequestException('Time 24 hours limit exceeded'),
             )
           : timerComplete
           ? throwError(
@@ -27,11 +29,7 @@ export class StartTestUseCase implements IUseCase {
                   'Time 1 hour to finished the test is complete',
                 ),
             )
-          : !!test?.started_at
-          ? of('Test has already started!')
-          : this.testService
-              .startTest(token)
-              .pipe(map(() => 'Test started successfully'));
+          : of(test);
       }),
     );
   }
