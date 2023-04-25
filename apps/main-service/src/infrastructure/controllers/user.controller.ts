@@ -2,8 +2,8 @@ import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { UserDelegator } from '@main-service/application/delegators';
 import { UserService } from '../persistance/services';
 import { UserModel } from '../persistance/models';
-import { IUserDomainModel } from '@main-service/domain/models';
 import { Observable } from 'rxjs';
+import { RegisterUserDto, UpdateUserDto } from '../utils/dto';
 
 @Controller('user')
 export class UserController {
@@ -14,7 +14,7 @@ export class UserController {
   }
 
   @Post('/registerUser')
-  registerUser(@Body() entity: IUserDomainModel): Observable<UserModel> {
+  registerUser(@Body() entity: RegisterUserDto): Observable<UserModel> {
     this.delegate.toRegisterUser();
     return this.delegate.execute(entity);
   }
@@ -22,7 +22,7 @@ export class UserController {
   @Put('/updateUser/:id')
   updateUser(
     @Param('id') id: string,
-    @Body() entity: IUserDomainModel,
+    @Body() entity: UpdateUserDto,
   ): Observable<UserModel> {
     this.delegate.toUpdateUser();
     return this.delegate.execute(id, entity);

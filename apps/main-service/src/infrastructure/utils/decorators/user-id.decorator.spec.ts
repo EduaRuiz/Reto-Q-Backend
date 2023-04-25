@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import UserId from '../user-id.decorator';
 import * as jwt from 'jsonwebtoken';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
+import { UserId } from '.';
 
 @Controller('users')
 class UserController {

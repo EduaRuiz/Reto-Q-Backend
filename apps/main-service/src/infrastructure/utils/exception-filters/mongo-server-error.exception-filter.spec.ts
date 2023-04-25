@@ -1,7 +1,7 @@
 import { ArgumentsHost, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { MongoServerError } from 'mongodb';
-import { MongoServerErrorExceptionFilter } from '..';
+import { MongoServerErrorExceptionFilter } from '.';
 
 describe('MongoServerErrorExceptionFilter', () => {
   let filter: MongoServerErrorExceptionFilter;

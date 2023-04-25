@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { JwtGuard } from '..';
+import { JwtGuard } from '.';
 
 describe('JwtGuard', () => {
   let jwtGuard: JwtGuard;
