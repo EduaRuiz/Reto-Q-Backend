@@ -107,8 +107,8 @@ export class TestMongoRepository implements IRepositoryBase<TestMongoModel> {
   }
 
   findByLevelAndUserId(
-    level: string,
     userId: string,
+    level: string,
   ): Observable<TestMongoModel[]> {
     return from(this.model.find({ level, user_id: userId }).exec()).pipe(
       catchError((error: MongoServerError) => {

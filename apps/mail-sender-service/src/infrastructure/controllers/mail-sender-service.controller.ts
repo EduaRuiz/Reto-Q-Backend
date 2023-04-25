@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { EmailService } from '../utils/services';
 import { Observable, tap } from 'rxjs';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { MailSenderDelegator } from '@mail-sender-service/application';
+import { MailSenderDelegator } from '@mail-sender-service/application/delegators';
 import { IEventToManage } from '@mail-sender-service/domain/interfaces';
 
 @Controller()
