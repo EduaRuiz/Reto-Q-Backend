@@ -1,3 +1,1 @@
-
-export * from './new-test.dto';
-
+export * from './send-answer-to-test.domain-dto';
