@@ -1,3 +1,3 @@
-export * from './question.delegate';
-export * from './test-delegate';
-export * from './user';
+export * from './question.delegator';
+export * from './test-delegator';
+export * from './user-delegator';

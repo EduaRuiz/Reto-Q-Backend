@@ -49,11 +49,11 @@ export class GenerateTestUseCase implements IUseCase {
           !timerComplete &&
           this.generatedTest.publish({ test, userEmail });
         return hasPassed24Hours
-          ? of({ success: false, message: 'Time 24hours limit exceeded' })
+          ? of({ success: false, message: 'Time 24 hours limit exceeded' })
           : timerComplete
           ? of({
               success: false,
-              message: 'Time 1hour to finished the test is complete',
+              message: 'Time 1 hour to finished the test is complete',
             })
           : of({ success: true, message: 'Test token available in email' });
       }),

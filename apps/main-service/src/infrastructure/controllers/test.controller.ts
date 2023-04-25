@@ -5,7 +5,7 @@ import {
   UserService,
 } from '../persistance/services';
 import { Observable } from 'rxjs';
-import { TestDelegate } from '@main-service/application/delegators';
+import { TestDelegator } from '@main-service/application/delegators';
 import {
   TestFinishedEventPublisher,
   TestGeneratedEventPublisher,
@@ -15,7 +15,7 @@ import { EmailPipe } from '../utils/pipes';
 
 @Controller('test')
 export class TestController {
-  private readonly delegate: TestDelegate;
+  private readonly delegate: TestDelegator;
 
   constructor(
     private readonly userService: UserService,
@@ -24,7 +24,7 @@ export class TestController {
     private readonly testGeneratedEvent: TestGeneratedEventPublisher,
     private readonly testFinishedEvent: TestFinishedEventPublisher,
   ) {
-    this.delegate = new TestDelegate(
+    this.delegate = new TestDelegator(
       this.userService,
       this.questionService,
       this.testService,
@@ -59,5 +59,11 @@ export class TestController {
   setAnswerToTest(@Body() answer: SendAnswerToTestDto): Observable<string> {
     this.delegate.toSetAnswerToTest();
     return this.delegate.execute<string>(answer);
+  }
+
+  @Get('get/:token')
+  getTest(@Param('token') token: string): Observable<string> {
+    this.delegate.toGetTest();
+    return this.delegate.execute<string>(token);
   }
 }
