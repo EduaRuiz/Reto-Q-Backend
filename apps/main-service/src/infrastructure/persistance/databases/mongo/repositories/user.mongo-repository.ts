@@ -91,7 +91,6 @@ export class UserMongoRepository implements IRepositoryBase<UserMongoModel> {
   }
 
   findOneByEmail(email: string): Observable<UserMongoModel> {
-    console.log('findOneByEmail', email);
     return from(this.model.findOne({ email })).pipe(
       catchError((error: MongoServerError) => {
         error.cause = new Error('Conflict while getting user by email');
