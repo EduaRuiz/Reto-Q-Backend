@@ -40,7 +40,7 @@ export class QuestionMongoRepository
         return from(
           this.model.findByIdAndUpdate(
             { _id: entityId.toString() },
-            { ...question, ...entity, _id: entityId },
+            { ...(question as any)._doc, ...entity, _id: entityId },
             { new: true },
           ),
         ).pipe(
