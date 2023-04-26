@@ -1,5 +1,4 @@
 import { Observable, catchError, of, switchMap, throwError } from 'rxjs';
-import { INewTestDto } from '@main-service/domain/dto';
 import {
   ITestDomainService,
   IUserDomainService,
@@ -7,6 +6,7 @@ import {
 import { TestDomainModel } from '@main-service/domain/models';
 import { TestGeneratedDomainEvent } from '@main-service/domain/events/publishers';
 import { IUseCase } from '../interface';
+import { BadRequestException } from '@nestjs/common';
 
 export class GenerateTestUseCase implements IUseCase {
   constructor(
@@ -14,16 +14,18 @@ export class GenerateTestUseCase implements IUseCase {
     private readonly userService: IUserDomainService,
     private readonly generatedTest: TestGeneratedDomainEvent,
   ) {}
-  execute(dto: INewTestDto): Observable<{ success: boolean; message: string }> {
-    return this.userService.getUserByEmail(dto.userEmail).pipe(
+  execute(
+    userEmail: string,
+  ): Observable<{ success: boolean; message: string }> {
+    return this.userService.getUserByEmail(userEmail).pipe(
       switchMap((user) => {
-        return user?.available
+        return user.available
           ? this.validateIfTestAlreadyExists(
-              user._id,
+              user._id.toString(),
               user.level,
-              dto.userEmail,
+              userEmail,
             )
-          : throwError(() => new Error('User not available'));
+          : throwError(() => new BadRequestException('User not available'));
       }),
     );
   }
@@ -36,19 +38,28 @@ export class GenerateTestUseCase implements IUseCase {
     return this.testService.getTestByUserAndLevel(userId, level).pipe(
       switchMap((test: TestDomainModel) => {
         const hasPassed24Hours =
-          new Date(test.created_at).getTime() >
+          new Date(test?.created_at).getTime() <
           Date.now() - 24 * 60 * 60 * 1000;
-        const timerComplete = !!test?.started_at
-          ? false
-          : new Date(test.started_at).getTime() > Date.now() - 60 * 1000;
+        const timerComplete =
+          !!test?.started_at &&
+          new Date(test?.started_at).getTime() < Date.now() - 60 * 60 * 1000;
+        const testAvailable = test.questions.find(
+          (question) => !question.answered,
+        );
         !hasPassed24Hours &&
           !timerComplete &&
+          !!testAvailable &&
           this.generatedTest.publish({ test, userEmail });
         return hasPassed24Hours
-          ? of({ success: false, message: 'Time limit exceeded' })
-          : !timerComplete
-          ? of({ success: false, message: 'Time limit exceeded' })
-          : of({ success: true, message: 'Test available' });
+          ? of({ success: false, message: 'Time 24 hours limit exceeded' })
+          : timerComplete
+          ? of({
+              success: false,
+              message: 'Time 1 hour to finished the test is complete',
+            })
+          : !testAvailable
+          ? of({ success: true, message: 'Test already answered' })
+          : of({ success: true, message: 'Test token available in email' });
       }),
       catchError(() => {
         const newTest = {

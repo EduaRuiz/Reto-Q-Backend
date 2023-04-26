@@ -4,7 +4,7 @@ import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(MailSenderServiceModule);
-
+  app.enableCors();
   app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
@@ -16,6 +16,6 @@ async function bootstrap() {
     },
   });
   await app.startAllMicroservices();
-  await app.listen(3001);
+  // await app.listen(3001);
 }
 bootstrap();
