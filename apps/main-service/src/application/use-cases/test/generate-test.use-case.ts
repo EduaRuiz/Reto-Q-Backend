@@ -43,10 +43,12 @@ export class GenerateTestUseCase implements IUseCase {
         const timerComplete =
           !!test?.started_at &&
           new Date(test?.started_at).getTime() < Date.now() - 60 * 60 * 1000;
-        console.log(new Date(test?.created_at).getTime());
-        console.log('timerComplete', timerComplete);
+        const testAvailable = test.questions.find(
+          (question) => !question.answered,
+        );
         !hasPassed24Hours &&
           !timerComplete &&
+          !!testAvailable &&
           this.generatedTest.publish({ test, userEmail });
         return hasPassed24Hours
           ? of({ success: false, message: 'Time 24 hours limit exceeded' })
@@ -55,6 +57,8 @@ export class GenerateTestUseCase implements IUseCase {
               success: false,
               message: 'Time 1 hour to finished the test is complete',
             })
+          : !testAvailable
+          ? of({ success: true, message: 'Test already answered' })
           : of({ success: true, message: 'Test token available in email' });
       }),
       catchError(() => {

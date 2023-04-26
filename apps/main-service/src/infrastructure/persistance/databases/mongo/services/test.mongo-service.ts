@@ -76,9 +76,13 @@ export class TestMongoService implements ITestDomainService {
         const questionAnswered = test.questions.find(
           (question) => question.question.sentence === sentence,
         );
-        questionAnswered.answered = true;
-        questionAnswered.points =
-          questionAnswered.question.answer === answer ? 2 : 0;
+        !questionAnswered.answered &&
+          ((questionAnswered.answered = true),
+          (questionAnswered.points =
+            JSON.stringify(questionAnswered.question.answer) ===
+            JSON.stringify(answer)
+              ? 2
+              : 0));
         test.questions = test.questions.map((question) =>
           question.question.sentence === sentence ? questionAnswered : question,
         );

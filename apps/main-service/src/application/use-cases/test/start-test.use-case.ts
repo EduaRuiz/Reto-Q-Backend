@@ -2,7 +2,7 @@ import { IUseCase } from '@mail-sender-service/application';
 import { TestDomainModel } from '@main-service/domain/models';
 import { ITestDomainService } from '@main-service/domain/services';
 import { BadRequestException } from '@nestjs/common';
-import { Observable, map, of, switchMap, throwError } from 'rxjs';
+import { Observable, of, switchMap, throwError } from 'rxjs';
 
 export class StartTestUseCase implements IUseCase {
   constructor(private readonly testService: ITestDomainService) {}
@@ -31,7 +31,7 @@ export class StartTestUseCase implements IUseCase {
           ? of('Test has already started!')
           : this.testService
               .startTest(token)
-              .pipe(map(() => 'Test started successfully'));
+              .pipe(switchMap(() => of('Test started successfully')));
       }),
     );
   }
