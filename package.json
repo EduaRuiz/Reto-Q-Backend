@@ -10,6 +10,7 @@
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start-mail": "nest start mail-sender-service",
+    "start-mail:dev": "nest start mail-sender-service --watch",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/reto-q-backend/main",
@@ -85,7 +86,8 @@
       ".module\\.ts$",
       ".mock\\.ts$",
       ".mocks\\.ts$",
-      "main\\.ts$"
+      "main\\.ts$",
+      "e2e-spec\\.ts$"
     ],
     "moduleNameMapper": {
       "@main-service/(.*)": "<rootDir>/apps/main-service/src/$1",
