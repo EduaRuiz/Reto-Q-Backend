@@ -3,7 +3,7 @@ import {
   ITestDomainService,
   IUserDomainService,
 } from '@main-service/domain/services';
-import { TestDomainModel } from '@main-service/domain/models';
+import { TestDomainModel, UserDomainModel } from '@main-service/domain/models';
 import { TestGeneratedDomainEvent } from '@main-service/domain/events/publishers';
 import { IUseCase } from '../interface';
 import { BadRequestException } from '@nestjs/common';
@@ -18,12 +18,23 @@ export class GenerateTestUseCase implements IUseCase {
     userEmail: string,
   ): Observable<{ success: boolean; message: string }> {
     return this.userService.getUserByEmail(userEmail).pipe(
-      switchMap((user) => {
+      switchMap((user: UserDomainModel) => {
         return user.available
           ? this.validateIfTestAlreadyExists(
               user._id.toString(),
               user.level,
               userEmail,
+            ).pipe(
+              switchMap((response: { success: boolean; message: string }) => {
+                return response.success
+                  ? of(response)
+                  : this.userService
+                      .updateUser(user._id.toString(), {
+                        ...(user as any)._doc,
+                        available: false,
+                      })
+                      .pipe(switchMap(() => of(response)));
+              }),
             )
           : throwError(() => new BadRequestException('User not available'));
       }),
@@ -58,7 +69,7 @@ export class GenerateTestUseCase implements IUseCase {
               message: 'Time 1 hour to finished the test is complete',
             })
           : !testAvailable
-          ? of({ success: true, message: 'Test already answered' })
+          ? of({ success: false, message: 'Test already answered' })
           : of({ success: true, message: 'Test token available in email' });
       }),
       catchError(() => {
