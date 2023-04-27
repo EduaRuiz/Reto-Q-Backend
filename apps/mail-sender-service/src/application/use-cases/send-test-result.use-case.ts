@@ -29,7 +29,7 @@ export class SendTestResultUseCase implements IUseCase {
 					</tr>
 					<tr>
 						<td align="center" style="padding: 10px 20px 30px 20px;">
-							<p style="font-size: 24px; font-weight: bold; margin: 0;">Here your test result is:</p>
+							<p style="font-size: 24px; font-weight: bold; margin: 0;">Your test result is:</p>
 							<p style="font-size: 48px; margin: 40px 0 0 0;">
 								<span>{this.result}</span>
 								<span>/</span>
