@@ -5,6 +5,7 @@ import { IEventToManage } from '@mail-sender-service/domain/interfaces';
 
 export class SendTestResultUseCase implements IUseCase {
   private result: number = 0;
+  private message: string = '';
   private readonly template: string = `
   <!DOCTYPE html>
 <html>
@@ -35,11 +36,7 @@ export class SendTestResultUseCase implements IUseCase {
 								<span>/</span>
 								<span class="highlight">30</span>
 							</p>
-							<p style="font-size: 16px; margin: 40px 0 0 0; text-align: center;">
-								<span style="font-weight: bold;">Congratulations!</span>
-								<span style="display: block;">Your score is greater than 26, and you have advanced to a new level.</span>
-								<span style="display: block;">You can now generate a new token and take a new exam.</span>
-							</p>
+							{this.message}
 						</td>
 					</tr>
 				</table>
@@ -56,11 +53,30 @@ export class SendTestResultUseCase implements IUseCase {
     this.result = data.test.questions.reduce((acc, question) => {
       return acc + question.points;
     }, 0);
+    if (this.result >= 26) {
+      this.message = `
+			<p style="font-size: 16px; margin: 40px 0 0 0; text-align: center;">
+				<span style="font-weight: bold;">Congratulations!</span>
+				<span style="display: block;">You have passed the test, you can generate a new test for the next level.</span>
+				<span style="display: block;">If you were already level 3 you will not be able to generate a new test.</span>
+			</p>
+			`;
+    } else {
+      this.message = `
+			<p style="font-size: 16px; margin: 40px 0 0 0; text-align: center;">
+				<span style="font-weight: bold;">Condolences</span>
+				<span style="display: block;">Your score is not enough to level up.</span>
+				<span style="display: block;">You can no longer generate or present more tests.</span>
+			</p>
+			`;
+    }
     return this.emailService.sendEmail(
       data.userEmail,
       'Test result',
       `Hi, your test result is ${this.result}/30`,
-      this.template.replace('{this.result}', this.result.toString()),
+      this.template
+        .replace('{this.result}', this.result.toString())
+        .replace('{this.message}', this.message),
     );
   }
 }
