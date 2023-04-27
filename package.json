@@ -85,7 +85,8 @@
       ".module\\.ts$",
       ".mock\\.ts$",
       ".mocks\\.ts$",
-      "main\\.ts$"
+      "main\\.ts$",
+      "e2e-spec\\.ts$"
     ],
     "moduleNameMapper": {
       "@main-service/(.*)": "<rootDir>/apps/main-service/src/$1",
