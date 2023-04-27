@@ -3,7 +3,7 @@ import {
   ITestDomainService,
   IUserDomainService,
 } from '@main-service/domain/services';
-import { TestDomainModel } from '@main-service/domain/models';
+import { TestDomainModel, UserDomainModel } from '@main-service/domain/models';
 import { TestGeneratedDomainEvent } from '@main-service/domain/events/publishers';
 import { IUseCase } from '../interface';
 import { BadRequestException } from '@nestjs/common';
@@ -18,14 +18,14 @@ export class GenerateTestUseCase implements IUseCase {
     userEmail: string,
   ): Observable<{ success: boolean; message: string }> {
     return this.userService.getUserByEmail(userEmail).pipe(
-      switchMap((user) => {
+      switchMap((user: UserDomainModel) => {
         return user.available
           ? this.validateIfTestAlreadyExists(
               user._id.toString(),
               user.level,
               userEmail,
             ).pipe(
-              switchMap((response) => {
+              switchMap((response: { success: boolean; message: string }) => {
                 return response.success
                   ? of(response)
                   : this.userService
