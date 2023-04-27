@@ -18,7 +18,7 @@ export class StartTestUseCase implements IUseCase {
           new Date(test?.started_at).getTime() < Date.now() - 60 * 60 * 1000;
         return hasPassed24Hours
           ? throwError(
-              () => new BadRequestException('Time 24hours limit exceeded'),
+              () => new BadRequestException('Time 24 hours limit exceeded'),
             )
           : timerComplete
           ? throwError(
