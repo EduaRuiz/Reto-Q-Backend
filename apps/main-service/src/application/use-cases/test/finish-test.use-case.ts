@@ -4,7 +4,7 @@ import {
   ITestDomainService,
   IUserDomainService,
 } from '@main-service/domain/services';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 
 export class FinishTestUseCase implements IUseCase {
   constructor(
@@ -32,7 +32,7 @@ export class FinishTestUseCase implements IUseCase {
                   test,
                   userEmail: user.email,
                 });
-                return of('ok');
+                return 'Test finished';
               }),
             );
           }),
