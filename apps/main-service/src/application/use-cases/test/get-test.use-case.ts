@@ -18,7 +18,6 @@ export class GetTestUseCase implements IUseCase {
         test.questions.forEach((question) => {
           question.question.answer = undefined;
         });
-        test.started_at = new Date();
         return hasPassed24Hours
           ? throwError(
               () => new BadRequestException('Time 24 hours limit exceeded'),
