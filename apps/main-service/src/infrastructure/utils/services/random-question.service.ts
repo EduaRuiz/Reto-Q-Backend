@@ -47,38 +47,6 @@ export class RandomQuestionService {
     return selectedQuestions;
   }
 
-  private groupByType(
-    questions: QuestionDomainModel[],
-  ): Map<string, QuestionDomainModel[]> {
-    const groups = new Map<string, QuestionDomainModel[]>();
-    for (const question of questions) {
-      const type = question.type;
-      let group = groups.get(type);
-      if (!group) {
-        group = [];
-        groups.set(type, group);
-      }
-      group.push(question);
-    }
-    return groups;
-  }
-
-  private groupByTopic(
-    questions: QuestionDomainModel[],
-  ): Map<string, QuestionDomainModel[]> {
-    const groups = new Map<string, QuestionDomainModel[]>();
-    for (const question of questions) {
-      const topic = question.topic;
-      let group = groups.get(topic);
-      if (!group) {
-        group = [];
-        groups.set(topic, group);
-      }
-      group.push(question);
-    }
-    return groups;
-  }
-
   private groupByTypeAndTopic(
     questions: QuestionDomainModel[],
   ): Map<string, Map<string, QuestionDomainModel[]>> {

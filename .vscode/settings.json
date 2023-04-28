@@ -2,5 +2,6 @@
   "cSpell.words": [
     "delegators",
     "truefalse"
-  ]
+  ],
+  "jest.autoRun": "off",
 }
