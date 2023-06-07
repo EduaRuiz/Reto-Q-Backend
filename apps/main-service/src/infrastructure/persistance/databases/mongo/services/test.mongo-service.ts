@@ -113,7 +113,7 @@ export class TestMongoService implements ITestDomainService {
 
   startTest(token: string): Observable<TestDomainModel> {
     return this.testRepo.findOneByToken(token).pipe(
-      switchMap((test) => {
+      switchMap((test: TestMongoModel) => {
         test.started_at = new Date();
         return this.testRepo.update(test._id, test);
       }),

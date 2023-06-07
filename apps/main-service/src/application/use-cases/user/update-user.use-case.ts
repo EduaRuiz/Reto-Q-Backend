@@ -16,7 +16,6 @@ export class UpdateUserUseCase implements IUseCase {
 
   private updateUser(entity: IUpdateUserDto): UserDomainModel {
     const { level, available } = entity;
-
     const user = new UserDomainModel();
     user.available = available;
     user.level = level;

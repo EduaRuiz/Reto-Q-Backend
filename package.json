@@ -10,15 +10,17 @@
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start-mail": "nest start mail-sender-service",
+    "start-mail:dev": "nest start mail-sender-service --watch",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/apps/reto-q-backend/main",
+    "start:prod": "node dist/apps/main-service/main",
+    "start-mail:prod": "node dist/apps/mail-sender-service/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/reto-q-backend/test/jest-e2e.json"
+    "test:e2e": "jest --config ./apps/main-service/test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -85,7 +87,8 @@
       ".module\\.ts$",
       ".mock\\.ts$",
       ".mocks\\.ts$",
-      "main\\.ts$"
+      "main\\.ts$",
+      "e2e-spec\\.ts$"
     ],
     "moduleNameMapper": {
       "@main-service/(.*)": "<rootDir>/apps/main-service/src/$1",

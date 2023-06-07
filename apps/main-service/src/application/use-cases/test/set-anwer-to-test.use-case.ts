@@ -11,7 +11,7 @@ export class SetAnswerToTestUseCase implements IUseCase {
     return this.testService
       .setAnswer(dto.token, dto.questionSentence, dto.answer)
       .pipe(
-        map((test) => {
+        map((test: TestDomainModel) => {
           test.questions.forEach((question) => {
             question.question.answer = [];
           });
