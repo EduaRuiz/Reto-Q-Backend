@@ -6,8 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
-    "build-all": "nest build && nest build mail-sender-service",
+    "build": "nest build && nest build mail-sender-service",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start-mail": "nest start mail-sender-service",
