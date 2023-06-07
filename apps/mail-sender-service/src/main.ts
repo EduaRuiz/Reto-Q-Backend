@@ -17,5 +17,6 @@ async function bootstrap() {
   });
   await app.startAllMicroservices();
   // await app.listen(3001);
+  console.log(`🚀 Application MAIL-SENDER-SERVICE is running 🚀`);
 }
 bootstrap();
